@@ -43,7 +43,6 @@
 	} // end of Plugin.prototype.init
 
 	Plugin.prototype._createArchiveList = function(data) {
-		console.log(data);
 		var self = this,
 				$responseText = $('<html>').html(data.responseText),
 				$appendTag = $('<ul>'),
