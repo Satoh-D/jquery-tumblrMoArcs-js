@@ -37,18 +37,19 @@
 			.done(function(data) {
 				self._createArchiveList(data);
 			})
-			.fail(function(jqXHR, textStatus, errorThrown) {
-				self._displayError(jqXHR, textStatus, errorThrown);
+			.fail(function(status, textStatus) {
+				self._displayError(status, textStatus);
 			});
 	} // end of Plugin.prototype.init
 
 	Plugin.prototype._createArchiveList = function(data) {
 		var self = this,
-				$responseText = $('<html>').html(data.responseText),
+				$responseText = $('<html>').html(data),
 				$appendTag = $('<ul>'),
 				$responseTextMonths = $responseText.find(self.settings.months),
 				appendTagInner = '',
 				month, count;
+				console.log($responseText);
 
 		for(var i = 0; i < $responseTextMonths.length; i++) {
 			month = $($responseTextMonths[i]).find('a').attr('href');
@@ -62,22 +63,24 @@
 		self.$element.append($appendTag);
 	} // end of Plugin.prototype._createArchiveList
 
-	Plugin.prototype._displayError = function(jqXHR, textStatus, errorThrown) {
-		console.log('HTTP Status: ' + jqXHR.status);
+	// Plugin.prototype._displayError = function(jqXHR, textStatus, errorThrown) {
+	Plugin.prototype._displayError = function(status, textStatus) {
+		console.log('HTTP Status: ' + status);
 		console.log('HTTP Status(Text): ' + textStatus);
-		console.log('Error Message: ' + errorThrown);
 	} // end  of Plugin.prototype._displayError
 
 	var _fetchArchiveData = function(url) {
-		var $dfd = $.Deferred();
+		var $dfd = $.Deferred(),
+				xhr = new XMLHttpRequest();
 
-		$.ajax({
-			url: url,
-			type: 'GET',
-			dataType: 'text',
-			success: $dfd.resolve,
-			error: $dfd.reject
-		})
+		xhr.onreadystatechange = function() {
+			if(xhr.readyState == 4 && xhr.status == 200) {
+				$dfd.resolve(xhr.responseText);
+			}
+		}
+
+		xhr.open('GET', url);
+		xhr.send(null);
 
 		return $dfd.promise();
 	} // end of _getArchiveData()
