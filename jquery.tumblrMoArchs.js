@@ -48,14 +48,14 @@
 				$appendTag = $('<ul>'),
 				$responseTextMonths = $responseText.find(self.settings.months),
 				appendTagInner = '',
-				month, count;
+				month, monthTxt, count;
 
 		for(var i = 0; i < $responseTextMonths.length; i++) {
 			month = $($responseTextMonths[i]).find('a').attr('href');
 			count = $($responseTextMonths[i]).find('span').html();
 
-			month = month.replace(/\/archive\//, '');
-			appendTagInner += '<li><a href="/' + month + '">' + month + ' (' + count + ')</a></li>'
+			monthTxt = month.replace(/\/archive\//, '');
+			appendTagInner += '<li><a href="' + month + '">' + monthTxt + ' (' + count + ')</a></li>'
 		}
 
 		$appendTag.html(appendTagInner);
