@@ -49,7 +49,6 @@
 				$responseTextMonths = $responseText.find(self.settings.months),
 				appendTagInner = '',
 				month, count;
-				console.log($responseText);
 
 		for(var i = 0; i < $responseTextMonths.length; i++) {
 			month = $($responseTextMonths[i]).find('a').attr('href');
@@ -74,8 +73,13 @@
 				xhr = new XMLHttpRequest();
 
 		xhr.onreadystatechange = function() {
+			// if(xhr.readyState == 4 && xhr.status == 200) {
 			if(xhr.readyState == 4 && xhr.status == 200) {
-				$dfd.resolve(xhr.responseText);
+				if(xhr.status == 200) {
+					$dfd.resolve(xhr.responseText);
+				} else {
+					$dfd.reject(xhr.status, xhr.textStatus)
+				}
 			}
 		}
 
