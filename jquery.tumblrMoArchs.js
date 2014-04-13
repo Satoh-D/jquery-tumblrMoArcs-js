@@ -8,7 +8,7 @@
  * @copyright   2014 Satoh_D
  * @author      Daiki Sato <sato.dik@gmail.com>
  * @link        http://orememo-v2.tumblr.com
- * @version     1.0
+ * @version     1.2
  * @since       April 10, 2014
  */
 
@@ -17,7 +17,9 @@
 	var pluginName = 'tumblrMoArchs',
 			defaults = {
 				url: '/archive',
-				months: '#browse_months_widget li:not(.empty)'
+				months: '#browse_months_widget li:not(.empty)',
+				dateForamt: false,
+				formatTxt: ''
 			};
 
 	function Plugin(element, options) {
@@ -48,21 +50,22 @@
 				$appendTag = $('<ul>'),
 				$responseTextMonths = $responseText.find(self.settings.months),
 				appendTagInner = '',
-				month, monthTxt, count;
+				month, count;
 
 		for(var i = 0; i < $responseTextMonths.length; i++) {
 			month = $($responseTextMonths[i]).find('a').attr('href');
 			count = $($responseTextMonths[i]).find('span').html();
 
 			monthTxt = month.replace(/\/archive\//, '');
-			appendTagInner += '<li><a href="' + month + '">' + monthTxt + ' (' + count + ')</a></li>'
+			appendTagInner += '<li><a href="' + month + '">' + _formatDate(monthTxt, self.settings.formatTxt) + ' (' + count + ')</a></li>'
 		}
+
+		console.log($responseText);
 
 		$appendTag.html(appendTagInner);
 		self.$element.append($appendTag);
 	} // end of Plugin.prototype._createArchiveList
 
-	// Plugin.prototype._displayError = function(jqXHR, textStatus, errorThrown) {
 	Plugin.prototype._displayError = function(status, textStatus) {
 		console.log('HTTP Status: ' + status);
 		console.log('HTTP Status(Text): ' + textStatus);
@@ -73,8 +76,7 @@
 				xhr = new XMLHttpRequest();
 
 		xhr.onreadystatechange = function() {
-			// if(xhr.readyState == 4 && xhr.status == 200) {
-			if(xhr.readyState == 4 && xhr.status == 200) {
+			if(xhr.readyState == 4) {
 				if(xhr.status == 200) {
 					$dfd.resolve(xhr.responseText);
 				} else {
@@ -88,6 +90,12 @@
 
 		return $dfd.promise();
 	} // end of _getArchiveData()
+
+	var _formatDate = function(d, formatTxt) {
+		d = moment(d, 'YYYY/MM');
+
+		return d.format(formatTxt);
+	} // end of _formatDate
 
 	$.fn[pluginName] = function(options) {
 		this.each(function() {

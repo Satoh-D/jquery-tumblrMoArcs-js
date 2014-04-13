@@ -22,3 +22,14 @@ $(function() {
 .
 <div id="monthyArchive"></div>
 ```
+
+## Opstions
+
+url: URL of the Archive Page (default: /archive)  
+months: Selector of Months (default: #browse_months_widget li:not(.empty))  
+dateFormat: Changing the date format (※ Requiring [Moment.js](http://momentjs.com/)) (default: false)  
+formatTxt: Text of date format(default: '')
+
+## Copyright
+
+2014 ©Daiki Sato.([@Satoh_D](https://twitter.com/Satoh_D))
