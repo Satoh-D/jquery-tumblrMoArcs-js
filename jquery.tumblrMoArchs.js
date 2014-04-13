@@ -57,10 +57,13 @@
 			count = $($responseTextMonths[i]).find('span').html();
 
 			monthTxt = month.replace(/\/archive\//, '');
-			appendTagInner += '<li><a href="' + month + '">' + _formatDate(monthTxt, self.settings.formatTxt) + ' (' + count + ')</a></li>'
-		}
 
-		console.log($responseText);
+			if(self.settings.dateForamt) {
+				appendTagInner += '<li><a href="' + month + '">' + _formatDate(monthTxt, self.settings.formatTxt) + ' (' + count + ')</a></li>'
+			} else {
+				appendTagInner += '<li><a href="' + month + '">' + monthTxt + ' (' + count + ')</a></li>'
+			}
+		}
 
 		$appendTag.html(appendTagInner);
 		self.$element.append($appendTag);
