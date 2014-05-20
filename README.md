@@ -23,7 +23,7 @@ $(function() {
 <div id="monthyArchive"></div>
 ```
 
-## Opstions
+## Options
 
 url: URL of the Archive Page (default: /archive)  
 months: Selector of Months (default: #browse_months_widget li:not(.empty))  
